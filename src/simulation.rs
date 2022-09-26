@@ -20,6 +20,7 @@ impl Simulation {
     }
 
     fn add_reaction(&mut self, reactants: Vec<String>, products: Vec<String>, rate: f32) {
+        // Reactants and products should be vecs of Species already. So bring them as String but find the proper Species
         let reaction = Reaction::new(reactants, products, rate);
         self.reactions.push(reaction);
         self.propensity_vector.push(0);

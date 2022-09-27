@@ -2,8 +2,6 @@ use std::vec;
 use rand::{thread_rng, Rng};
 use rand::distributions::Uniform;
 use ndarray::{arr2, Array2, arr1, Array1, s};
-mod simulation;
-mod reaction;
 
 
 const V: f32 = 1e-15;

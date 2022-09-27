@@ -1,40 +1,41 @@
-struct Reaction {
-    reactants: Vec<Species>,
-    products: Vec<Species>,
+pub struct Reaction<'a> {
+    reactants: Vec<&'a Species>,
+    products: Vec<&'a Species>,
     st_vec: Vec<i32>,
     rate: f32
 }
 
-struct Species {
+#[derive(Clone)]
+pub struct Species {
     name: String,
     n: f32,
 }
 
-impl Reaction {
-    pub fn new(reactants: Vec<String>, products: Vec<String>, rate: f32) -> Self {
+impl<'a> Reaction<'a> {
+    pub fn new(reactants: Vec<&'a Species>, products: Vec<&'a Species>, rate: f32) -> Self {
         // reactants and products should be species already here.
-        let mut st_matrix = [0; reactants.len() + products.len()];
-        let mut reactants_particle = [];
-        let mut products_particle = [];
+        let mut st_vec: Vec<i32> = Vec::new();
+        let mut reactants_particle = Vec::new();
+        let mut products_particle = Vec::new();
+
         for i in 0..reactants.len() {
-            st_matrix[i] -= 1;
-            reactants_particle.push(Species { // Don't create Species again!
-                name: reactants[i],
-                n: 0.
-            })
+            st_vec.push(-1);
+            reactants_particle.push(reactants[i]);
         }
         for i in 0..products.len() {
-            st_matrix[reactants.len() + i] += 1;
-            products_particle.push(Species {
-                name: products[i],
-                n: 0.
-            })
+            st_vec.push(1);
+            products_particle.push(products[i]);
         }
-        return Reaction {
+        return Self {
             reactants: reactants_particle,
             products: products_particle,
-            st_matrix: st_matrix,
+            st_vec: st_vec,
             rate: rate
         }
     }
+}
+
+impl Species {
+    pub fn get_n(&self) -> f32 { self.n }
+    pub fn get_name(&self) -> &String { &self.name }
 }

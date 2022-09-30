@@ -12,7 +12,7 @@ pub struct Simulation {
     rates_vector: Vec<f32>,
     propensity_vector: Vec<f32>,
     total_rate_sum: f32,
-    pub species_history: Vec<f32>
+    pub species_history: HashMap<String, Vec<f32>>
 }
 
 /*
@@ -32,7 +32,7 @@ impl Simulation {
             rates_vector: Vec::new(),
             propensity_vector: Vec::new(),
             total_rate_sum: 0.,
-            species_history: Vec::new()
+            species_history: HashMap::new()
         }
     }
 
@@ -46,8 +46,9 @@ impl Simulation {
         self.propensity_vector.push(0.);
     }
     
-    pub fn add_species(&mut self, particle_name: String, particle_number: f32) {
-        self.species.insert(particle_name, particle_number);
+    pub fn add_species(&mut self, particle_name: &str, particle_number: f32) {
+        self.species.insert(particle_name.to_string(), particle_number);
+        self.species_history.insert(particle_name.to_string(), Vec::new());
     }
 
     fn calculate_rate_reaction(&self, reaction: &Reaction) -> f32 {
@@ -65,7 +66,6 @@ impl Simulation {
             } else {
                 self.propensity_vector[i] = self.rates_vector[i] / self.total_rate_sum + self.propensity_vector[i-1];
             }
-            println!("{}",self.propensity_vector[i]);
         }
         if first_call {
             self.propensity_vector.push(1.);
@@ -110,7 +110,9 @@ impl Simulation {
 
             self.prepare_propensities(false);
             println!("A: {}, B: {}, C: {}", self.species["A"], self.species["B"], self.species["C"]);
-            self.species_history.push(self.species["A"]);            
+            for (spec, n) in &self.species {
+                self.species_history.get_mut(spec).unwrap().push(*n);
+            }  
         }
     }
 }

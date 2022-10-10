@@ -1,0 +1,45 @@
+t 36000
+d m 100
+
+s R2 9.
+s O 1.
+s R2O 0.
+s IR2 0.
+s IR2O 0.
+s I2R2 0.
+s I2R2O 0.
+s mY 0.
+s Y 30.
+s I 7224. 4.
+s Iex 7224. 4.
+s YI 0.
+
+r R2 + O -> R2O 2.43e6 2.076e-9
+r IR2 + O -> IR2O 1.21e6 2.076e-9
+r I2R2 + O -> I2R2O 2.43e4 2.076e-9
+r R2O -> R2 + O 6.30e-4
+r IR2O -> IR2 + O 6.30e-4
+r I2R2O -> I2R2 + O 3.15e-1
+
+// Transcription translation and degradation
+r O -> O + mY 1.26e-1
+r mY -> mY + Y 4.44e-2
+r mY 1.11e-2
+r Y  2.10e-4
+
+// Inducer repressor interactions
+r I + R2 -> IR2 2.27e4 2.076e-9
+r I + IR2 -> I2R2 1.14e4 2.076e-9
+r I + R2O -> IR2O 6.67e2 2.076e-9
+r I + IR2O -> I2R2O 3.33e2 2.076e-9
+r IR2 -> I + R2 2.00e-1
+r I2R2 -> I + IR2 4.00e-1
+r IR2O -> I + R2O 1.00
+r I2R2O -> I + IR2O 2.00
+
+// Inducer transport
+r Iex -> I 2.33e-3
+r I -> Iex 2.33e-3
+r Y + Iex -> YI + Iex 3.03e4 2.076e-9
+r YI -> Y + Iex 1.20e-1
+r YI -> Y + I 1.20e+1

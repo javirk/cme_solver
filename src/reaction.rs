@@ -8,18 +8,22 @@ pub struct Reaction {
 }
 
 impl Reaction {
-    pub fn new(reactants: Vec<String>, products: Vec<String>, k: f32) -> Self {
+    pub fn new(reactants: Vec<&str>, products: Vec<&str>, k: f32) -> Self {
         let mut st_vec: Vec<f32> = Vec::new();
+        let mut reactants_string = Vec::new();
+        let mut products_string = Vec::new();
 
-        for _ in 0..reactants.len() {
+        for i in 0..reactants.len() {
+            reactants_string.push(reactants[i].to_string());
             st_vec.push(-1.);
         }
-        for _ in 0..products.len() {
+        for i in 0..products.len() {
+            products_string.push(products[i].to_string());
             st_vec.push(1.);
         }
         return Self {
-            reactants: reactants,
-            products: products,
+            reactants: reactants_string,
+            products: products_string,
             st_vec: st_vec,
             k: k
         }
